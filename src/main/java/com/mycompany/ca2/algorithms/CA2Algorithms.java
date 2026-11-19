@@ -11,6 +11,7 @@ package com.mycompany.ca2.algorithms;
 public class CA2Algorithms {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+      Employee e = new Employee("Ana Silva", "Clerk", "Finance");
+System.out.println(e);
     }
 }
