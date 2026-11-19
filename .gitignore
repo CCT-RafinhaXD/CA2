@@ -1,0 +1,14 @@
+# Maven build output
+target/
+
+# NetBeans
+nbproject/private/
+
+# Other IDEs
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
