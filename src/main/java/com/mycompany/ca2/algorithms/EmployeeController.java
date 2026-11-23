@@ -20,6 +20,15 @@ public class EmployeeController {
 
     // menu loop
     public void run() {
+                String fileName = view.askFileName();
+        while (!model.loadFile(fileName)) {
+            view.showMessage("File not found, try again.");
+            fileName = view.askFileName();
+        }
+        view.showMessage("File read successfully");
+        
+        
+        
         MenuOption choice = null;
 
         while (choice != MenuOption.EXIT) {

@@ -30,6 +30,11 @@ public class EmployeeView {
             return -1;
         }
     }
+    
+        public String askFileName() {
+        System.out.print("Please enter the filename to read: ");
+        return scanner.nextLine().trim();
+    }
 
     public void showMessage(String message) {
         System.out.println(message);
