@@ -16,6 +16,7 @@ public class EmployeeModel {
     private Employee[] employees = new Employee[0];
     private String[] managerTypes = new String[0]; // valid job titles
     private String[] departments = new String[0];  // valid departments
+    private boolean sorted = false; // true after the list is sorted
 
     // reads the file and fills the arrays, returns false if the file is not found
     public boolean loadFile(String fileName) {
@@ -40,6 +41,7 @@ public class EmployeeModel {
             employees = new Employee[count];
             managerTypes = new String[0];
             departments = new String[0];
+            sorted = false;
 
             int i = 0;
             firstLine = true;
@@ -87,6 +89,74 @@ public class EmployeeModel {
         return bigger;
     }
 
+        // sorts the employees by full name using quick sort
+    public void sortEmployees() {
+        employees = quickSort(employees);
+        sorted = true;
+    }
+
+    public boolean isSorted() {
+        return sorted;
+    }
+
+    // quicksort by full name
+    private Employee[] quickSort(Employee[] arr) {
+
+        // base case
+        if (arr.length <= 1) {
+            return arr;
+        }
+
+        Employee pivot = arr[arr.length - 1];
+
+        int leftCount = 0;
+        int rightCount = 0;
+
+        // count sizes
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i].getName().compareToIgnoreCase(pivot.getName()) < 0) {
+                leftCount++;
+            } else {
+                rightCount++;
+            }
+        }
+
+        // create arrays
+        Employee[] left = new Employee[leftCount];
+        Employee[] right = new Employee[rightCount];
+
+        int l = 0, r = 0;
+
+        // fill arrays
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i].getName().compareToIgnoreCase(pivot.getName()) < 0) {
+                left[l++] = arr[i];
+            } else {
+                right[r++] = arr[i];
+            }
+        }
+
+        // recursive calls
+        left = quickSort(left);
+        right = quickSort(right);
+
+        // combine arrays
+        Employee[] result = new Employee[arr.length];
+        int index = 0;
+
+        for (int i = 0; i < left.length; i++) {
+            result[index++] = left[i];
+        }
+
+        result[index++] = pivot;
+
+        for (int i = 0; i < right.length; i++) {
+            result[index++] = right[i];
+        }
+
+        return result;
+    }
+    
     public Employee[] getEmployees() {
         return employees;
     }

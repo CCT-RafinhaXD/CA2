@@ -40,8 +40,10 @@ public class EmployeeController {
                 view.showMessage("Invalid option, try again.");
             } else {
                 switch (choice) {
-                    case SORT:
+                         case SORT:
                         view.showMessage("SORT selected");
+                        model.sortEmployees();
+                        view.showNames(model.getEmployees(), 20);
                         break;
                     case SEARCH:
                         view.showMessage("SEARCH selected");

@@ -39,6 +39,14 @@ public class EmployeeView {
     public void showMessage(String message) {
         System.out.println(message);
     }
-    
-    
+        
+
+        // shows the first names of the list (up to the limit)
+    public void showNames(Employee[] list, int limit) {
+        int max = Math.min(limit, list.length);
+        System.out.println("First " + max + " names (A-Z):");
+        for (int i = 0; i < max; i++) {
+            System.out.println((i + 1) + ". " + list[i].getName());
+        }
+    }
 }
