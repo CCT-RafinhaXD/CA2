@@ -49,4 +49,20 @@ public class EmployeeView {
             System.out.println((i + 1) + ". " + list[i].getName());
         }
     }
+    
+          public String askName() {
+        System.out.print("Enter the full name to search: ");
+        return scanner.nextLine().trim();
+    }
+
+    // shows the details of one employee, or a message if it is null
+    public void showEmployee(Employee employee) {
+        if (employee == null) {
+            System.out.println("Employee not found.");
+        } else {
+            System.out.println("Name: " + employee.getName());
+            System.out.println("Manager Type: " + employee.getManagerType());
+            System.out.println("Department: " + employee.getDepartment());
+        }
+    }
 }
