@@ -156,7 +156,40 @@ public class EmployeeModel {
 
         return result;
     }
-    
+        // recursive binary search by full name, returns the position or -1
+    private int binarySearch(Employee[] arr, String name, int low, int high) {
+
+        // base case: not found
+        if (low > high) {
+            return -1;
+        }
+
+        int mid = (low + high) / 2;
+        int result = name.compareToIgnoreCase(arr[mid].getName());
+
+        if (result == 0) {
+            return mid;                                    // found
+        } else if (result < 0) {
+            return binarySearch(arr, name, low, mid - 1);  // search the left half
+        } else {
+            return binarySearch(arr, name, mid + 1, high); // search the right half
+        }
+    }
+
+    // searches an employee by full name, returns null if not found
+    public Employee searchEmployee(String name) {
+        // binary search only works on a sorted list
+        if (!sorted) {
+            sortEmployees();
+        }
+
+        int position = binarySearch(employees, name.trim(), 0, employees.length - 1);
+
+        if (position == -1) {
+            return null;
+        }
+        return employees[position];
+    }
     public Employee[] getEmployees() {
         return employees;
     }

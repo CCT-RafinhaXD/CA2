@@ -45,15 +45,22 @@ public class EmployeeController {
                         model.sortEmployees();
                         view.showNames(model.getEmployees(), 20);
                         break;
-                    case SEARCH:
+                        
+                        case SEARCH:
                         view.showMessage("SEARCH selected");
+                        String name = view.askName();
+                        Employee found = model.searchEmployee(name);
+                        view.showEmployee(found);
                         break;
+                        
                     case ADD_RECORDS:
                         view.showMessage("ADD RECORDS selected");
                         break;
+                        
                     case CREATE_TREE:
                         view.showMessage("Create a binary tree selected");
                         break;
+                        
                     case EXIT:
                         view.showMessage("Goodbye!");
                         break;
