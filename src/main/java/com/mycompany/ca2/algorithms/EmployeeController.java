@@ -60,6 +60,9 @@ public class EmployeeController {
                         
                     case CREATE_TREE:
                         view.showMessage("Create a binary tree selected");
+                        model.createTree(20);
+                        view.showTree(model.levelOrderTraversal(),
+                                model.getTreeHeight(), model.getTreeNodeCount());
                         break;
                         
                     case EXIT:

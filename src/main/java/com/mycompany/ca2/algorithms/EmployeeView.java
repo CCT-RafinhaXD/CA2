@@ -87,5 +87,26 @@ public class EmployeeView {
             System.out.println((i + 1) + ". " + list[i]);
         }
     }
-    
+
+    // shows the tree level by level, then the height and the total of nodes
+    public void showTree(Employee[] order, int height, int count) {
+        System.out.println("Employee hierarchy (level order):");
+
+        int index = 0;
+        int level = 0;
+        int levelSize = 1; // a level has twice the nodes of the previous one
+
+        while (index < order.length) {
+            System.out.println("Level " + level + ":");
+            for (int i = 0; i < levelSize && index < order.length; i++) {
+                System.out.println("  " + order[index]);
+                index++;
+            }
+            level++;
+            levelSize = levelSize * 2;
+        }
+
+        System.out.println("Tree height: " + height + " levels");
+        System.out.println("Total nodes: " + count);
+    }
 }

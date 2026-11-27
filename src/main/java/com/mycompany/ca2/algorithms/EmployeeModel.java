@@ -19,6 +19,21 @@ public class EmployeeModel {
     private Employee[] newEmployees = new Employee[0]; // records added by the user
     private boolean sorted = false; // true after the list is sorted
 
+    // binary tree (hierarchy)
+    private Node root = null;
+    private int nodeCount = 0;
+
+    // one node of the binary tree
+    private static class Node {
+        Employee employee;
+        Node left;
+        Node right;
+
+        Node(Employee employee) {
+            this.employee = employee;
+        }
+    }
+
     // reads the file and fills the arrays, returns false if the file is not found
     public boolean loadFile(String fileName) {
         try {
@@ -247,6 +262,133 @@ public class EmployeeModel {
         return newEmployees;
     }
     
+    // lower number = higher position in the hierarchy
+    private int getRank(String managerType) {
+        if (managerType.equals("Head Manager")) {
+            return 1;
+        } else if (managerType.equals("Senior Manager")) {
+            return 2;
+        } else if (managerType.equals("Manager")) {
+            return 3;
+        } else if (managerType.equals("Assistant Manager")) {
+            return 4;
+        } else if (managerType.equals("Team Lead")) {
+            return 5;
+        }
+        return 6; // all the other employees
+    }
+
+    // picks the first records by rank (highest positions first) and builds the tree
+    public void createTree(int total) {
+        // sorted list gives the same order every time (A-Z inside each rank)
+        if (!sorted) {
+            sortEmployees();
+        }
+
+        int size = Math.min(total, employees.length);
+        Employee[] chosen = new Employee[size];
+        int count = 0;
+
+        for (int rank = 1; rank <= 6 && count < size; rank++) {
+            for (int i = 0; i < employees.length && count < size; i++) {
+                if (getRank(employees[i].getManagerType()) == rank) {
+                    chosen[count] = employees[i];
+                    count++;
+                }
+            }
+        }
+
+        insertLevelOrder(chosen);
+    }
+
+    // level-order (breadth-first) insertion: fill left first, then right,
+    // when both children are taken, move to the next node in level order
+    private void insertLevelOrder(Employee[] list) {
+        root = null;
+        nodeCount = 0;
+
+        if (list.length == 0) {
+            return;
+        }
+
+        Node[] queue = new Node[list.length];
+        int head = 0;
+        int tail = 0;
+
+        root = new Node(list[0]);
+        queue[tail] = root;
+        tail++;
+        nodeCount = 1;
+
+        for (int i = 1; i < list.length; i++) {
+            Node parent = queue[head];
+            Node child = new Node(list[i]);
+
+            if (parent.left == null) {
+                parent.left = child;
+            } else {
+                parent.right = child;
+                head++; // parent is full, the next node in the queue is the next parent
+            }
+
+            queue[tail] = child;
+            tail++;
+            nodeCount++;
+        }
+    }
+
+    // level-order traversal: returns the employees level by level
+    public Employee[] levelOrderTraversal() {
+        Employee[] result = new Employee[nodeCount];
+
+        if (root == null) {
+            return result;
+        }
+
+        Node[] queue = new Node[nodeCount];
+        int head = 0;
+        int tail = 0;
+        int index = 0;
+
+        queue[tail] = root;
+        tail++;
+
+        while (head < tail) {
+            Node current = queue[head];
+            head++;
+
+            result[index] = current.employee;
+            index++;
+
+            if (current.left != null) {
+                queue[tail] = current.left;
+                tail++;
+            }
+            if (current.right != null) {
+                queue[tail] = current.right;
+                tail++;
+            }
+        }
+
+        return result;
+    }
+
+    // height of the tree in levels (empty tree = 0)
+    public int getTreeHeight() {
+        return height(root);
+    }
+
+    private int height(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(height(node.left), height(node.right));
+    }
+
+    public int getTreeNodeCount() {
+        return nodeCount;
+    }
+
     public Employee[] getEmployees() {
         return employees;
     }
