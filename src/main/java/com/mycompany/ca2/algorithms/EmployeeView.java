@@ -65,4 +65,27 @@ public class EmployeeView {
             System.out.println("Department: " + employee.getDepartment());
         }
     }
+    
+        public String askNewName() {
+        System.out.print("Enter the full name of the new employee: ");
+        return scanner.nextLine().trim();
+    }
+
+    // shows a numbered list of options and reads the number chosen (-1 if invalid)
+    public int askChoice(String title, String[] options) {
+        System.out.println(title);
+        for (int i = 0; i < options.length; i++) {
+            System.out.println((i + 1) + ". " + options[i]);
+        }
+        System.out.print("Choose a number: ");
+        return readOption();
+    }
+
+    public void showNewEmployees(Employee[] list) {
+        System.out.println("Newly added records:");
+        for (int i = 0; i < list.length; i++) {
+            System.out.println((i + 1) + ". " + list[i]);
+        }
+    }
+    
 }

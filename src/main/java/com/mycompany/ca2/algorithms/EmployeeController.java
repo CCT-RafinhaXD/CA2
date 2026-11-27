@@ -53,8 +53,9 @@ public class EmployeeController {
                         view.showEmployee(found);
                         break;
                         
-                    case ADD_RECORDS:
+                        case ADD_RECORDS:
                         view.showMessage("ADD RECORDS selected");
+                        addEmployee();
                         break;
                         
                     case CREATE_TREE:
@@ -67,6 +68,43 @@ public class EmployeeController {
                 }
             }
         }
+    }
+    
+        // asks for the data of a new employee, validates it and adds it to the list
+    private void addEmployee() {
+
+        // name: cannot be empty or already exist
+        String name = view.askNewName();
+        while (name.isEmpty() || model.nameExists(name)) {
+            if (name.isEmpty()) {
+                view.showMessage("The name cannot be empty.");
+            } else {
+                view.showMessage("This name already exists.");
+            }
+            name = view.askNewName();
+        }
+
+        // manager type: must exist
+        String managerType = model.findManagerType(
+                view.askChoice("Manager Types:", model.getManagerTypes()));
+        while (managerType == null) {
+            view.showMessage("Invalid Manager Type, try again.");
+            managerType = model.findManagerType(
+                    view.askChoice("Manager Types:", model.getManagerTypes()));
+        }
+
+        // department: must exist
+        String department = model.findDepartment(
+                view.askChoice("Departments:", model.getDepartments()));
+        while (department == null) {
+            view.showMessage("Invalid Department, try again.");
+            department = model.findDepartment(
+                    view.askChoice("Departments:", model.getDepartments()));
+        }
+
+        model.addEmployee(name, managerType, department);
+        view.showMessage("Employee added successfully.");
+        view.showNewEmployees(model.getNewEmployees());
     }
 
     public static void main(String[] args) {

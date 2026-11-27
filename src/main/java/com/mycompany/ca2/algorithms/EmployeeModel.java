@@ -16,6 +16,7 @@ public class EmployeeModel {
     private Employee[] employees = new Employee[0];
     private String[] managerTypes = new String[0]; // valid job titles
     private String[] departments = new String[0];  // valid departments
+    private Employee[] newEmployees = new Employee[0]; // records added by the user
     private boolean sorted = false; // true after the list is sorted
 
     // reads the file and fills the arrays, returns false if the file is not found
@@ -42,6 +43,7 @@ public class EmployeeModel {
             managerTypes = new String[0];
             departments = new String[0];
             sorted = false;
+            newEmployees = new Employee[0];
 
             int i = 0;
             firstLine = true;
@@ -190,6 +192,61 @@ public class EmployeeModel {
         }
         return employees[position];
     }
+    
+        // returns true if an employee with this name already exists
+    public boolean nameExists(String name) {
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i].getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returns the manager type with this number (1 to n), or null if it does not exist
+    public String findManagerType(int number) {
+        if (number < 1 || number > managerTypes.length) {
+            return null;
+        }
+        return managerTypes[number - 1];
+    }
+
+    // returns the department with this number (1 to n), or null if it does not exist
+    public String findDepartment(int number) {
+        if (number < 1 || number > departments.length) {
+            return null;
+        }
+        return departments[number - 1];
+    }
+
+    // adds a new employee to the list and to the list of new records
+    public void addEmployee(String name, String managerType, String department) {
+        Employee newEmployee = new Employee(name, managerType, department);
+
+        // bigger employees array
+        Employee[] bigger = new Employee[employees.length + 1];
+        for (int i = 0; i < employees.length; i++) {
+            bigger[i] = employees[i];
+        }
+        bigger[employees.length] = newEmployee;
+        employees = bigger;
+
+        // bigger array of new records
+        Employee[] biggerNew = new Employee[newEmployees.length + 1];
+        for (int i = 0; i < newEmployees.length; i++) {
+            biggerNew[i] = newEmployees[i];
+        }
+        biggerNew[newEmployees.length] = newEmployee;
+        newEmployees = biggerNew;
+
+        // the list is not sorted anymore
+        sorted = false;
+    }
+
+    public Employee[] getNewEmployees() {
+        return newEmployees;
+    }
+    
     public Employee[] getEmployees() {
         return employees;
     }
